@@ -2,7 +2,6 @@
 #coding=UTF-8
 def hae_lukujarjestys_urlt(osoite):
 	import sys,httplib;
-	#osoite="https://amp.jamk.fi/asio_v16/kalenterit2/index.php?av_v=1&av=160926161002160901&cluokka=TTV15S6&kt=lk&laji=%25||%25&guest=%2Fasiakas12&lang=fin&ui=&yks=&apvm=160725&tiedot=kaikki&ss_ttkal=&ccv=&yhopt=&__cm=&b=1466153181&av_y=0";
 	osoite=osoite.replace('https://','').replace('amp.jamk.fi','');
 	print "Yhdistetään palvelimeen..."
 	c = httplib.HTTPSConnection("amp.jamk.fi")

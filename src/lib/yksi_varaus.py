@@ -1,6 +1,6 @@
 #encoding=UTF-8
 import sys, httplib, time;
-def hae_yksi_varaus(osoite):
+def hae_yksi_varaus(osoite,monistus):
 	osoite=osoite.replace('https://','').replace('amp.jamk.fi','');
 	print "Yhdistetään palvelimeen..."
 	c = httplib.HTTPSConnection("amp.jamk.fi")
@@ -36,19 +36,32 @@ def hae_yksi_varaus(osoite):
 	#
 	i=1;
 	vevents="";
+	olemassa=[];
 	while i<len(kivat):
+		kirjoita=True
 		rivi=kivat[i].replace('<td>','').replace('</td></tr>','').replace('<font face="arial,verdana" size=-1>','').split('</td>');
 		pvm=rivi[0].split(';')[1].split('.');#päivä=0, kuukausi=1, vuosi=3
 		aika=rivi[1].replace(' - ',':').split(':');#alkutunti=0, alkumin=1,lopputunti=2, loppumin=3
-		vevents=vevents+"BEGIN:VEVENT\r\n";
-		vevents=vevents+"UID:"+rivi[5].replace(' ','_')+"@"+pvm[2]+pvm[1]+pvm[0]+"T"+aika[0]+aika[1]+"00"+str(i)+"\r\n";
-		vevents=vevents+"DTSTAMP:"+time.strftime("%Y%m%d")+"T"+time.strftime("%H%M%S")+"\r\n";
-		vevents=vevents+"DTSTART:"+pvm[2]+pvm[1]+pvm[0]+"T"+aika[0]+aika[1]+"00\r\n";
-		vevents=vevents+"DTEND:"+pvm[2]+pvm[1]+pvm[0]+"T"+aika[2]+aika[3]+"00\r\n";
-		vevents=vevents+"SUMMARY:"+rivi[5]+"\r\n";
-		vevents=vevents+"LOCATION:"+rivi[2]+"\r\n";
-		vevents=vevents+"DESCRIPTION:"+rivi[4]+"\r\n";
-		vevents=vevents+"END:VEVENT\r\n";
+		if not(monistus):
+			lisa=str(i);
+		else:
+			lisa="";
+		uid=rivi[5].replace(' ','_')+"@"+pvm[2]+pvm[1]+pvm[0]+"T"+aika[0]+aika[1]+"00"+lisa;
+		if uid in olemassa:
+			print "VIRHE: Kahdentunut UID "+uid+" - Ei kirjoiteta tiedostoon";
+			kirjoita=False;
+		else:
+			olemassa.append(uid);
+		if kirjoita:
+			vevents=vevents+"BEGIN:VEVENT\r\n";
+			vevents=vevents+"UID:"+uid+"\r\n";
+			vevents=vevents+"DTSTAMP:"+time.strftime("%Y%m%d")+"T"+time.strftime("%H%M%S")+"\r\n";
+			vevents=vevents+"DTSTART:"+pvm[2]+pvm[1]+pvm[0]+"T"+aika[0]+aika[1]+"00\r\n";
+			vevents=vevents+"DTEND:"+pvm[2]+pvm[1]+pvm[0]+"T"+aika[2]+aika[3]+"00\r\n";
+			vevents=vevents+"SUMMARY:"+rivi[5]+"\r\n";
+			vevents=vevents+"LOCATION:"+rivi[2]+"\r\n";
+			vevents=vevents+"DESCRIPTION:"+rivi[4]+"\r\n";
+			vevents=vevents+"END:VEVENT\r\n";
 		i=i+1;
 	print "Löydettiin "+str(len(kivat))+" esiintymää";
 	return vevents.decode('iso-8859-1').encode('utf8');
