@@ -15,7 +15,13 @@ tiedosto=sys.argv[2];
 tapahtumat=hae_lukujarjestys_urlt(osoite);
 vevents="";
 for t in tapahtumat:
-	vevents=vevents+hae_yksi_varaus(t,monistus);
+	tiedot=hae_yksi_varaus(t,monistus);
+	kys=raw_input("Haluatko tuoda kurssin "+tiedot[0]);
+	if kys=="k" or kys=="K":
+		vevents=vevents+tiedot[1];
+		print "Tuotiin kurssi "+tiedot[0];
+	else:
+		print "Ei tuotu kurssia "+tiedot[0];
 print "Kirjoitetaan tapahtumat tiedostoon "+tiedosto;
 tied=open(tiedosto,'w');
 tied.write("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//sikkela\r\n"+vevents+"END:VCALENDAR\r\n");

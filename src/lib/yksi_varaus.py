@@ -37,6 +37,7 @@ def hae_yksi_varaus(osoite,monistus):
 	i=1;
 	vevents="";
 	olemassa=[];
+	kurssitunnus="";
 	while i<len(kivat):
 		kirjoita=True
 		rivi=kivat[i].replace('<td>','').replace('</td></tr>','').replace('<font face="arial,verdana" size=-1>','').split('</td>');
@@ -53,6 +54,8 @@ def hae_yksi_varaus(osoite,monistus):
 		else:
 			olemassa.append(uid);
 		if kirjoita:
+			if len(kurssitunnus)<1:
+				kurssitunnus=rivi[5];
 			vevents=vevents+"BEGIN:VEVENT\r\n";
 			vevents=vevents+"UID:"+uid+"\r\n";
 			vevents=vevents+"DTSTAMP:"+time.strftime("%Y%m%d")+"T"+time.strftime("%H%M%S")+"\r\n";
@@ -64,4 +67,4 @@ def hae_yksi_varaus(osoite,monistus):
 			vevents=vevents+"END:VEVENT\r\n";
 		i=i+1;
 	print "Löydettiin "+str(len(kivat))+" esiintymää";
-	return vevents.decode('iso-8859-1').encode('utf8');
+	return [kurssitunnus,vevents.decode('iso-8859-1').encode('utf8')];
