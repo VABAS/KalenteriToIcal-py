@@ -3,7 +3,7 @@
 from lib.yksi_varaus import hae_yksi_varaus as hae_yksi_varaus;
 from lib.hae_lukujarjestys_urlt import hae_lukujarjestys_urlt as hae_lukujarjestys_urlt;
 import time,sys;
-if len(sys.argv)<3:
+if len(sys.argv)<3:#Tarkistetaan että käyttäjä on syöttänyt tarvittavat argumentit
 	sys.exit("Ei tarpeeksi argumentteja!\nKäyttö: "+sys.argv[0]+" osoite tiedosto.ics [eimon]");
 monistus=False;
 if len(sys.argv)==4:
@@ -12,18 +12,18 @@ if len(sys.argv)==4:
 		monistus=True;
 osoite=sys.argv[1];
 tiedosto=sys.argv[2];
-tapahtumat=hae_lukujarjestys_urlt(osoite);
+tapahtumat=hae_lukujarjestys_urlt(osoite);#Kutsutaan osoitteet hakevaa aliohjelmaa
 vevents="";
-for t in tapahtumat:
-	tiedot=hae_yksi_varaus(t,monistus);
-	kys=raw_input("Haluatko tuoda kurssin "+tiedot[0]);
+for t in tapahtumat:#Käydään osoitteet läpi yksi kerrallaan
+	tiedot=hae_yksi_varaus(t,monistus);#Ja kutsutaan jokaisella osoitteella tapahtumat hakevaa aliohjelmaa
+	kys=raw_input("Haluatko tuoda kurssin "+tiedot[0]);#Tiedustellaan haluaako käyttäjä tuoda löydetyn kurssin
 	if kys=="k" or kys=="K":
-		vevents=vevents+tiedot[1];
+		vevents=vevents+tiedot[1];#Jos haluaa niin tuodaan
 		print "Tuotiin kurssi "+tiedot[0];
 	else:
 		print "Ei tuotu kurssia "+tiedot[0];
 print "Kirjoitetaan tapahtumat tiedostoon "+tiedosto;
-tied=open(tiedosto,'w');
+tied=open(tiedosto,'w');#Kirjoitetaan tapahtumat käyttäjän haluamaan .ics tiedostoon
 tied.write("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//sikkela\r\n"+vevents+"END:VCALENDAR\r\n");
 tied.close();
 print "Valmis";
