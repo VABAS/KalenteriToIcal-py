@@ -23,7 +23,7 @@ vevents="";
 kurssit=[]
 for t in tapahtumat:#Käydään osoitteet läpi yksi kerrallaan
 	tiedot=hae_yksi_varaus(t,monistus);#Ja kutsutaan jokaisella osoitteella tapahtumat hakevaa aliohjelmaa
-	if tiedot[0] in kurssit:#Tarkistetaan ettei kurssia tällä tunnuksella ole jo tuotu
+	if tiedot[1] in kurssit:#Tarkistetaan ettei kurssia tällä tunnuksella ole jo tuotu
 		print("INFO: \"Kurssi "+tiedot[0]+"\" on jo tuotu")
 	else:
 		if eikys:
@@ -31,11 +31,11 @@ for t in tapahtumat:#Käydään osoitteet läpi yksi kerrallaan
 		else:
 			kys=input("Haluatko tuoda kurssin "+tiedot[0]+"? K=Kyllä, Kaikki muut=Ei: ");#Tiedustellaan haluaako käyttäjä tuoda löydetyn kurssin
 		if kys=="k" or kys=="K":
-			vevents=vevents+tiedot[1];#Jos haluaa niin tuodaan
+			vevents=vevents+tiedot[2];#Jos haluaa niin tuodaan
 			print("Tuotiin kurssi "+tiedot[0])
 		else:
 			print("Ei tuotu kurssia "+tiedot[0])
-		kurssit.append(tiedot[0])#Kirjoitetaan kurssitunnus tuotujen taulukkoon
+		kurssit.append(tiedot[1])#Kirjoitetaan kurssitunnus tuotujen taulukkoon
 print("Kirjoitetaan tapahtumat tiedostoon "+tiedosto)
 tied=open(tiedosto,'w');#Kirjoitetaan tapahtumat käyttäjän haluamaan .ics tiedostoon
 tied.write("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//sikkela\r\n"+vevents+"END:VCALENDAR\r\n");

@@ -77,4 +77,4 @@ def hae_yksi_varaus(osoite,monistus):
 			vevents=vevents+"DESCRIPTION:"+opettaja+"\r\n";
 			vevents=vevents+"END:VEVENT\r\n";
 		i+=1
-	return [kurssitunnus,vevents];#Palautetaan taulukkona pääohjelmaan
+	return [kurssitunnus,uid,vevents];#Palautetaan taulukkona pääohjelmaan
