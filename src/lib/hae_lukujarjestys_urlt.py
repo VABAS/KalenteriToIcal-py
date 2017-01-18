@@ -10,12 +10,12 @@ def hae_lukujarjestys_urlt(osoite):
                 flip = False
                 for attr in attrs:
                     if flip:
-                        self.linkit.append("/asio_v16"+attr[1].
-                                           split("\\\'")[1].
+                        self.linkit.append("/asio_v16"+attr[1]. \
+                                           split("\\\'")[1]. \
                                            replace('..', ''))
                         break
 
-                    if attr[0] == "href" and attr[1] == "javascript:void(null)":
+                    if attr[0] == "href" and attr[1] == "javascript:void(null);":
                         flip = True
 
     # Poistetaan osoitteen alusta https:// mikäli se löytyy ja amp.jamk.fi jos
@@ -40,5 +40,5 @@ def hae_lukujarjestys_urlt(osoite):
     #print(data)
     parser = LinkkiEtsija()
     parser.feed(str(data))
-    print("Läydettiin " + str(len(parser.linkit)) + " tapahtumaa")
+    print("Löydettiin " + str(len(parser.linkit)) + " tapahtumaa")
     return parser.linkit

@@ -36,14 +36,14 @@ for t in tapahtumat:
 
     # Tarkistetaan ettei kurssia tällä tunnuksella ole jo tuotu.
     if tiedot[1] in kurssit:
-        print("INFO: \"Kurssi "+tiedot[0]+"\" on jo tuotu")
+        print("INFO: \"Kurssi " + tiedot[0] + "\" on jo tuotu")
     else:
         if eikys:
             kys = "k"
         else:
             # Tiedustellaan haluaako käyttäjä tuoda löydetyn kurssin.
-            kys = input("Haluatko tuoda kurssin " +
-                       tiedot[0] +
+            kys = input("Haluatko tuoda kurssin " + \
+                       tiedot[0] + \
                        "? K = Kyllä, Kaikki muut = Ei: ")
 
         # Jos haluaa niin tuodaan.

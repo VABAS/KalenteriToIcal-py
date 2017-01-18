@@ -3,12 +3,12 @@ import sys, http.client, time
 from html.parser import HTMLParser
 def hae_yksi_varaus(osoite, monistus):
     class TehtavaHakija(HTMLParser):
-        linkit = []
         flip_1 = False
         flip_2 = False
         flip_data_handle = False
         kaikki = []
         nama = []
+        dataProsessoitu = False
 
         def handle_starttag(self, tag, attrs):
             if tag == "tr":
@@ -30,18 +30,26 @@ def hae_yksi_varaus(osoite, monistus):
                 self.flip_2 = False
 
             elif tag == "td":
-                self.flip_2 = False
+                # Jos dataa ei ole prosessoitu, niin lisätään tyhjä rivi
+                # taulukkoon.
+                if not self.dataProsessoitu and self.flip_1 and self.flip_2:
+                    self.nama.append("")
 
+                self.dataProsessoitu = False
+                self.flip_2 = False
+                
         def handle_data(self, data):
             if self.flip_1 and self.flip_2:
                 self.nama.append(data)
+                self.dataProsessoitu = True
+
 
     # Poistetaan osoitteen alusta https:// mikäli se löytyy ja amp.jamk.fi jos
     # löytyy.
     osoite = osoite.replace('https://', '').replace('amp.jamk.fi', '')
-    print("Yhdistetään palvelimeen...")
 
     # Otetaan yhteys palvelimeen.
+    print("Yhdistetään palvelimeen...")
     c = http.client.HTTPSConnection("amp.jamk.fi")
 
     # Ja tehdään kysely osoitteella.
@@ -59,7 +67,7 @@ def hae_yksi_varaus(osoite, monistus):
     olemassa = []
     kurssitunnus = ""
     i = 0
-    while i<len(parser.kaikki):
+    while i < len(parser.kaikki):
         kirjoita = True
         viikonpaiva = parser.kaikki[i][0]
         pvm = parser.kaikki[i][1].split('.')
