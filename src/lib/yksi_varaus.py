@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #encoding = UTF-8
 import sys, http.client, time
 from html.parser import HTMLParser
@@ -37,7 +38,7 @@ def hae_yksi_varaus(osoite, monistus):
 
                 self.dataProsessoitu = False
                 self.flip_2 = False
-                
+
         def handle_data(self, data):
             if self.flip_1 and self.flip_2:
                 self.nama.append(data)
@@ -119,3 +120,25 @@ def hae_yksi_varaus(osoite, monistus):
 
     # Palautetaan taulukkona pääohjelmaan.
     return [kurssitunnus, uid, vevents]
+
+# Mahdollistetaan kutsuminen omana ohjelmanaan.
+if __name__ == "__main__":
+    args = sys.argv
+    if len(args) < 4:
+        sys.exit("Liian vähän argumentteja!\nKäyttö: " + \
+                 args[0] + " [osoite] [tiedosto] [eimon]")
+    else:
+        osoite = args[1]
+        tiedosto = args[2]
+        monistus = True
+        if args[2] == "eimon":
+            monistus = False
+
+        # Palautusarvosta halutaan ainoastaan events osa ja jätetään
+        # kurssitunnus sekä uid-kenttä huomiotta.
+        vevents = hae_yksi_varaus(osoite, monistus)[2]
+        tied = open(tiedosto, 'w')
+        tied.write("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//sikkela\r\n" + \
+                   vevents + "END:VCALENDAR\r\n")
+        tied.close()
+        print("Valmis")
