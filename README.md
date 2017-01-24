@@ -37,3 +37,12 @@ argumentin _eikys_.
 On mahdollista myös hakea ainoastaan yksi varaus (kurssi) käyttämällä
 yksi_varaus.py-tiedostoa suoraan lib-hakemistosta. Eimon-argumentti ohittaa
 tapahtumien monistamisen.
+
+### tuo_tiedostosta.py
+
+`./tuo_tiedostosta.py linkkitiedosto tiedosto.ics [eimon]` tai
+`python3 tuo_tiedostosta.py linkkitiedosto tiedosto.ics [eimon]`
+
+Valitsemalla yksittäisten kurssien osoitteet tiedostoon yksi per rivi ja
+antamalla tämän tiedoston argumenttina tälle skriptille, saa haettua kustomoidun
+listan kursseja annettuun tiedostoon.
